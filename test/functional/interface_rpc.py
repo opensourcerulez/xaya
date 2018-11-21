@@ -47,18 +47,40 @@ class RPCInterfaceTest(BitcoinTestFramework):
         assert_equal(result_by_id[3]['error']['code'], -32601)
         assert_equal(result_by_id[3]['result'], None)
 
+    def test_huge_batch(self):
+        self.log.info("Testing a very large batch request...")
+
+        request = []
+        for i in range(10000):
+            blkhash = self.send_request({
+                "method": "getblockhash",
+                "params": [i],
+            })['result']
+            request.append({
+                "method": "getblock",
+                "params": {
+                    "blockhash": blkhash,
+                    "verbosity": 2,
+                },
+            })
+
+        with self.node.assert_memory_usage_stable(perc_increase_allowed=0.05):
+            for i in range(10):
+                self.send_request(request)
+
     def run_test(self):
         self.node = self.nodes[0]
         self.node.generate(10)
 
-        url = urllib.parse.urlparse(self.node.url)
+        url = urllib.parse.urlparse("http://xaya:vzArB9uxC559SBTAjbYU@localhost:18493")
         authpair = url.username + ':' + url.password
         self.headers = {"Authorization": "Basic " + str_to_b64str(authpair)}
 
         self.conn = http.client.HTTPConnection(url.hostname, url.port)
         self.conn.connect()
 
-        self.test_batch_request()
+        #self.test_batch_request()
+        self.test_huge_batch()
 
 
 if __name__ == '__main__':

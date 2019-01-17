@@ -153,12 +153,15 @@ PowData::isValid (const uint256& hash, const Consensus::Params& params) const
     }
   else
     {
+    
+      const PowAlgo coreAlgo = getCoreAlgo ();
+
       if (fakeHeader == nullptr)
         return error ("%s: stand-alone PoW data has no fake header", __func__);
       if (fakeHeader->hashMerkleRoot != hash)
         return error ("%s: fake header commits to wrong hash", __func__);
       if (!checkProofOfWork (*fakeHeader, params))
-        return error ("%s: fake header PoW is invalid", __func__);
+        return error ("%s: fake header PoW is invalid %s / %s", __func__, fakeHeader.GetPowHash (coreAlgo).ToString().c_str(),hash.ToString().c_str());
     }
 
   return true;

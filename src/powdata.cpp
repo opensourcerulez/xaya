@@ -44,10 +44,9 @@ powLimitForAlgo (const PowAlgo algo, const Consensus::Params& params)
 
 
 std::string
-showMeHash (const CPureBlockHeader& hdr)
+showMeHash (const CPureBlockHeader& hdr, const PowAlgo algo)
 {
-  const PowAlgo coreAlgo = getCoreAlgo ();
-  return hdr.GetPowHash(coreAlgo).ToString();
+  return hdr.GetPowHash(PowAlgo).ToString();
 } 
 
 PowAlgo
@@ -169,7 +168,7 @@ PowData::isValid (const uint256& hash, const Consensus::Params& params) const
       if (fakeHeader->hashMerkleRoot != hash)
         return error ("%s: fake header commits to wrong hash", __func__);
       if (!checkProofOfWork (*fakeHeader, params))
-        return error ("%s: fake header PoW is invalid %s / %s", __func__, showMeHash(*fakeHeader),hash.ToString().c_str());
+        return error ("%s: fake header PoW is invalid %s / %s", __func__, showMeHash(*fakeHeader,coreAlgo),hash.ToString().c_str());
     }
 
   return true;

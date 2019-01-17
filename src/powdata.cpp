@@ -46,7 +46,7 @@ powLimitForAlgo (const PowAlgo algo, const Consensus::Params& params)
 std::string
 showMeHash (const CPureBlockHeader& hdr)
 {
-  return hdr.GetPowHash.ToString().c_str();
+  return hdr.GetPowHash().ToString();
 } 
 
 PowAlgo

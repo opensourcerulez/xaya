@@ -42,6 +42,13 @@ powLimitForAlgo (const PowAlgo algo, const Consensus::Params& params)
   return ArithToUint256 (result);
 }
 
+
+string
+showMeHash (const CPureBlockHeader& hdr)
+{
+  return hdr.GetPowHash.ToString().c_str();
+} 
+
 PowAlgo
 PowAlgoFromString (const std::string& str)
 {
@@ -165,15 +172,7 @@ PowData::isValid (const uint256& hash, const Consensus::Params& params) const
     }
 
   return true;
-}
-                      
-
-string
-PowData::showMeHash (const CPureBlockHeader& hdr) const
-{
-  return hdr.GetPowHash.ToString().c_str();
-}                      
-                      
+} 
 
 bool
 PowData::checkProofOfWork (const CPureBlockHeader& hdr,

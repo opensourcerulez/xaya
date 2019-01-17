@@ -161,7 +161,7 @@ PowData::isValid (const uint256& hash, const Consensus::Params& params) const
       if (fakeHeader->hashMerkleRoot != hash)
         return error ("%s: fake header commits to wrong hash", __func__);
       if (!checkProofOfWork (*fakeHeader, params))
-        return error ("%s: fake header PoW is invalid %s / %s", __func__, ((CPureBlockHeader) fakeHeader).GetPowHash(coreAlgo).ToString().c_str(),hash.ToString().c_str());
+        return error ("%s: fake header PoW is invalid %s / %s", __func__, (GetNeoscryptHash(*fakeHeader).ToString().c_str(),hash.ToString().c_str());
     }
 
   return true;
